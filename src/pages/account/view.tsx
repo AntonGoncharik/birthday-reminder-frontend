@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Form, Input, Button, DatePicker } from 'antd';
+import { Form, Input, Button } from 'antd';
 
 import style from './style.module.scss';
 // import { Auth, AuthPayload } from './interface';
@@ -35,13 +35,6 @@ const View: FC = (): JSX.Element => {
           rules={[{ required: true, message: 'Please input your last name!' }]}
         >
           <Input />
-        </Form.Item>
-        <Form.Item
-          label="Birth date"
-          name="birthDate"
-          rules={[{ required: true, message: 'Please input your birth date!' }]}
-        >
-          <DatePicker />
         </Form.Item>
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
           <Button type="primary" htmlType="submit">
