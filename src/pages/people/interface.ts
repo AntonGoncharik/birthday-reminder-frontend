@@ -1,3 +1,4 @@
-export interface Home {
-  email?: string;
+export interface People {
+  navigateToAddMan: () => void;
+  navigateToMan: () => void;
 }

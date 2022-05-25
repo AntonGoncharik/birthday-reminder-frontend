@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import style from './App.module.scss';
 import { Account, Auth, Home, People, Man } from './pages';
-import { ErrorBoundary, Navbar } from './components';
+import { ErrorBoundary, Navbar, Splash } from './components';
 
 const AuthorizedLayout: FC = (): JSX.Element => {
   return (
@@ -50,13 +50,13 @@ const App = () => {
   // }, 10000);
 
   if (loading) {
-    return <div>Loading</div>;
+    return <Splash />;
   }
 
   return (
     <BrowserRouter>
       <ErrorBoundary>
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<Splash />}>
           {authorized ? <AuthorizedLayout /> : <UnauthorizedLayout />}
         </Suspense>
       </ErrorBoundary>

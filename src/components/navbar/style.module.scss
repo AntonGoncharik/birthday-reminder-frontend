@@ -1,3 +1,7 @@
 .container {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
   justify-content: center;
+  z-index: 9999;
 }

@@ -1,9 +1,10 @@
 import React, { FC } from 'react';
 
 import { State } from './interfaces';
+import { Error } from '../../pages';
 
 const View: FC<State> = (): JSX.Element => {
-  return <div>Error</div>;
+  return <Error />;
 };
 
 export default View;
