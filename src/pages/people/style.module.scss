@@ -8,3 +8,8 @@
 .item {
   cursor: pointer;
 }
+
+.btn {
+  position: absolute;
+  z-index: 9999;
+}

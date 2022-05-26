@@ -2,6 +2,7 @@ import React, { FC, Suspense, useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 // import { ConfigProvider } from 'antd';
 
+import './layout/global.scss';
 import style from './App.module.scss';
 import { Account, Auth, Home, People, Man } from './pages';
 import { ErrorBoundary, Navbar, Splash } from './components';

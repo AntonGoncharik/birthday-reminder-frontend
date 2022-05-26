@@ -30,6 +30,7 @@ const View: FC<People> = (props): JSX.Element => {
         size="large"
         icon={<PlusCircleOutlined />}
         onClick={navigateToAddMan}
+        className={style.btn}
       />
       <List
         itemLayout="horizontal"
