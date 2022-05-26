@@ -1,6 +1,6 @@
 import React, { FC, Suspense, useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-// import { ConfigProvider } from 'antd';
+import { RecoilRoot } from 'recoil';
 
 import './layout/global.scss';
 import style from './App.module.scss';
@@ -42,25 +42,19 @@ const App = () => {
     }, 2000);
   }, []);
 
-  // setTimeout(() => {
-  //   ConfigProvider.config({
-  //     theme: {
-  //       primaryColor: '#274916',
-  //     },
-  //   });
-  // }, 10000);
-
   if (loading) {
     return <Splash />;
   }
 
   return (
     <BrowserRouter>
-      <ErrorBoundary>
-        <Suspense fallback={<Splash />}>
-          {authorized ? <AuthorizedLayout /> : <UnauthorizedLayout />}
-        </Suspense>
-      </ErrorBoundary>
+      <RecoilRoot>
+        <ErrorBoundary>
+          <Suspense fallback={<Splash />}>
+            {authorized ? <AuthorizedLayout /> : <UnauthorizedLayout />}
+          </Suspense>
+        </ErrorBoundary>
+      </RecoilRoot>
     </BrowserRouter>
   );
 };

@@ -2,11 +2,15 @@ import React, { FC } from 'react';
 import { Form, Input, Button } from 'antd';
 
 import style from './style.module.scss';
-// import { Auth, AuthPayload } from './interface';
+import { useAccountState } from '../../store';
 
 const View: FC = (): JSX.Element => {
+  const { state, signup } = useAccountState();
+
   const onFinish = (values: any) => {
+    signup();
     console.log('Success:', values);
+    console.log('State:', state);
   };
 
   return (
@@ -15,7 +19,11 @@ const View: FC = (): JSX.Element => {
         name="basic"
         labelCol={{ span: 8 }}
         wrapperCol={{ span: 16 }}
-        initialValues={{ remember: true }}
+        initialValues={{
+          email: state.data.email,
+          firstName: state.data.firstName,
+          lastName: state.data.lastName,
+        }}
         onFinish={onFinish}
         autoComplete="off"
       >
