@@ -2,13 +2,17 @@ import React, { FC } from 'react';
 import { Form, Input, Button } from 'antd';
 
 import style from './style.module.scss';
-import { Auth, AuthPayload } from './interface';
+import { Auth } from './interface';
+import { AuthPayload } from '../../interfaces';
+import { useAccountState } from '../../store';
 
 const View: FC<Auth> = (props): JSX.Element => {
   const { isSignin, setIsSignin, setIsSignup } = props;
 
+  const { signin } = useAccountState();
+
   const onFinish = (values: AuthPayload) => {
-    console.log('Success:', values);
+    signin(values);
   };
 
   return (

@@ -3,8 +3,3 @@ export interface Auth {
   setIsSignin: () => void;
   setIsSignup: () => void;
 }
-
-export interface AuthPayload {
-  email: string;
-  password: string;
-}

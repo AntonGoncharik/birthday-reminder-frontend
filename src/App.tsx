@@ -1,11 +1,18 @@
-import React, { FC, Suspense, useState, useEffect } from 'react';
+import React, { FC, Suspense } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
+import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 
 import './layout/global.scss';
 import style from './App.module.scss';
 import { Account, Auth, Home, People, Man } from './pages';
 import { ErrorBoundary, Navbar, Splash } from './components';
+import { useAccountState } from './store';
+
+const client = new ApolloClient({
+  uri: process.env.REACT_APP_API_URL,
+  cache: new InMemoryCache(),
+});
 
 const AuthorizedLayout: FC = (): JSX.Element => {
   return (
@@ -31,30 +38,33 @@ const UnauthorizedLayout: FC = (): JSX.Element => {
   );
 };
 
-const App = () => {
-  const [authorized, setAuthorized] = useState(false);
-  const [loading, setLoading] = useState(true);
+const Layout = () => {
+  const { state } = useAccountState();
 
-  useEffect(() => {
-    setTimeout(() => {
-      setAuthorized(true);
-      setLoading(false);
-    }, 2000);
-  }, []);
+  // if (state.loading) {
+  //   return <Splash />;
+  // }
 
-  if (loading) {
-    return <Splash />;
+  if (state.data.email) {
+    return <AuthorizedLayout />;
+  } else {
+    return <UnauthorizedLayout />;
   }
+};
 
+const App = () => {
   return (
     <BrowserRouter>
-      <RecoilRoot>
-        <ErrorBoundary>
-          <Suspense fallback={<Splash />}>
-            {authorized ? <AuthorizedLayout /> : <UnauthorizedLayout />}
-          </Suspense>
-        </ErrorBoundary>
-      </RecoilRoot>
+      <ApolloProvider client={client}>
+        <RecoilRoot>
+          <ErrorBoundary>
+            <Suspense fallback={<Splash />}>
+              <Layout />
+              {/* {authorized ? <AuthorizedLayout /> : <UnauthorizedLayout />} */}
+            </Suspense>
+          </ErrorBoundary>
+        </RecoilRoot>
+      </ApolloProvider>
     </BrowserRouter>
   );
 };

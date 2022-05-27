@@ -3,14 +3,13 @@ import { Form, Input, Button } from 'antd';
 
 import style from './style.module.scss';
 import { useAccountState } from '../../store';
+import { AuthPayload } from '../../interfaces';
 
 const View: FC = (): JSX.Element => {
-  const { state, signup } = useAccountState();
+  const { state } = useAccountState();
 
-  const onFinish = (values: any) => {
-    signup();
-    console.log('Success:', values);
-    console.log('State:', state);
+  const onFinish = (values: AuthPayload) => {
+    console.log(values);
   };
 
   return (
