@@ -8,7 +8,7 @@ const accountState = atom({
       id: '1',
       email: 'ant.goncahrik@gmail.com',
       firstName: 'Anton',
-      lastName: '',
+      lastName: 'Goncharik',
     },
   },
 });
@@ -24,5 +24,13 @@ export const useAccountState = () => {
     });
   };
 
-  return { state, signup };
+  const signin = () => {
+    setState({
+      ...state,
+      data: { ...state.data, lastName: 'Goncharik' },
+      loading: true,
+    });
+  };
+
+  return { state, signup, signin };
 };
