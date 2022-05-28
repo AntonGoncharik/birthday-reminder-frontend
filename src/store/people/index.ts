@@ -1,7 +1,7 @@
 import { atom } from 'recoil';
 
 export const accountState = atom({
-  key: 'accountState',
+  key: 'accountState1',
   default: {
     id: '1',
     email: 'ant.goncahrik@gmail.com',

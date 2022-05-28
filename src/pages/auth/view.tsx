@@ -3,17 +3,9 @@ import { Form, Input, Button } from 'antd';
 
 import style from './style.module.scss';
 import { Auth } from './interface';
-import { AuthPayload } from '../../interfaces';
-import { useAccountState } from '../../store';
 
 const View: FC<Auth> = (props): JSX.Element => {
-  const { isSignin, setIsSignin, setIsSignup } = props;
-
-  const { signin } = useAccountState();
-
-  const onFinish = (values: AuthPayload) => {
-    signin(values);
-  };
+  const { isSignin, setIsSignin, setIsSignup, onFinish, loading } = props;
 
   return (
     <div className={style.container}>
@@ -42,7 +34,12 @@ const View: FC<Auth> = (props): JSX.Element => {
           <Input.Password />
         </Form.Item>
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-          <Button type="primary" htmlType="submit">
+          <Button
+            type="primary"
+            htmlType="submit"
+            disabled={loading}
+            loading={loading}
+          >
             {isSignin ? <span>Signin</span> : <span>Signup</span>}
           </Button>
           <div>

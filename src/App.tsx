@@ -1,5 +1,5 @@
 import React, { FC, Suspense } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 
@@ -34,6 +34,7 @@ const UnauthorizedLayout: FC = (): JSX.Element => {
   return (
     <Routes>
       <Route path="/auth" element={<Auth />} />
+      <Route path="*" element={<Navigate to="/auth" replace />} />
     </Routes>
   );
 };
@@ -60,7 +61,6 @@ const App = () => {
           <ErrorBoundary>
             <Suspense fallback={<Splash />}>
               <Layout />
-              {/* {authorized ? <AuthorizedLayout /> : <UnauthorizedLayout />} */}
             </Suspense>
           </ErrorBoundary>
         </RecoilRoot>

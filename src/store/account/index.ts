@@ -1,5 +1,6 @@
 import { atom, useRecoilState } from 'recoil';
 import { useMutation } from '@apollo/client';
+import { useNavigate } from 'react-router-dom';
 
 import { signupGql, signinGql } from '../../services';
 import { AuthPayload } from '../../interfaces';
@@ -8,7 +9,7 @@ import { showError } from '../../utilities';
 const accountState = atom({
   key: 'accountState',
   default: {
-    loading: true,
+    loading: false,
     data: {
       id: '',
       email: '',
@@ -22,6 +23,7 @@ export const useAccountState = () => {
   const [state, setState] = useRecoilState(accountState);
   const [signupMutation] = useMutation(signupGql);
   const [signinMutation] = useMutation(signinGql);
+  const navigate = useNavigate();
 
   const signup = async (payload: AuthPayload) => {
     try {
@@ -70,22 +72,24 @@ export const useAccountState = () => {
       });
 
       setState({
-        ...state,
+        loading: false,
         data: {
           ...state.data,
-          id: result.data.signup.id,
-          email: result.data.signup.email,
-          firstName: result.data.signup.firstName,
-          lastName: result.data.signup.lastName,
+          id: result.data.signin.user.id,
+          email: result.data.signin.user.email,
+          firstName: result.data.signin.user.firstName,
+          lastName: result.data.signin.user.lastName,
         },
       });
+
+      navigate('/');
     } catch (error) {
-      showError(error as Error);
-    } finally {
       setState({
         ...state,
         loading: false,
       });
+
+      showError(error as Error);
     }
   };
 
