@@ -6,6 +6,7 @@ import { useAccountState } from '../../store';
 
 const Container: FC = (): JSX.Element => {
   const [isSignin, setIsSignin] = useState(true);
+  const [isVisibleModal, setIsVisibleModal] = useState(false);
   const { state, signin, signup } = useAccountState();
 
   const handleSetIsSignin = () => {
@@ -16,11 +17,19 @@ const Container: FC = (): JSX.Element => {
     setIsSignin(false);
   };
 
+  const handleOpenModal = () => {
+    setIsVisibleModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsVisibleModal(false);
+  };
+
   const handleOnFinish = (values: AuthPayload) => {
     if (isSignin) {
       signin(values);
     } else {
-      signup(values);
+      signup(values, handleOpenModal);
     }
   };
 
@@ -31,6 +40,9 @@ const Container: FC = (): JSX.Element => {
       setIsSignup={handleSetIsSignup}
       onFinish={handleOnFinish}
       loading={state.loading}
+      isVisibleModal={isVisibleModal}
+      openModal={handleOpenModal}
+      closeModal={handleCloseModal}
     />
   );
 };

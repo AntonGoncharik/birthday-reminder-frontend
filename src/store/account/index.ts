@@ -25,36 +25,32 @@ export const useAccountState = () => {
   const [signinMutation] = useMutation(signinGql);
   const navigate = useNavigate();
 
-  const signup = async (payload: AuthPayload) => {
+  const signup = async (payload: AuthPayload, successCallback: () => void) => {
     try {
       setState({
         ...state,
         loading: true,
       });
 
-      const result = await signupMutation({
+      await signupMutation({
         variables: {
           payload,
         },
       });
 
-      setState({
-        ...state,
-        data: {
-          ...state.data,
-          id: result.data.signup.id,
-          email: result.data.signup.email,
-          firstName: result.data.signup.firstName,
-          lastName: result.data.signup.lastName,
-        },
-      });
-    } catch (error) {
-      throw error;
-    } finally {
+      successCallback();
+
       setState({
         ...state,
         loading: false,
       });
+    } catch (error) {
+      setState({
+        ...state,
+        loading: false,
+      });
+
+      showError(error as Error);
     }
   };
 

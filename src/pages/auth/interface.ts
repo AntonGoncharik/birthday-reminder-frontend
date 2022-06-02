@@ -6,4 +6,7 @@ export interface Auth {
   setIsSignup: () => void;
   onFinish: (values: AuthPayload) => void;
   loading: boolean;
+  isVisibleModal: boolean;
+  openModal: () => void;
+  closeModal: () => void;
 }

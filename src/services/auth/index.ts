@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 export const signupGql = gql`
-  mutation signin($payload: AuthPayload!) {
-    signin(payload: $payload) {
+  mutation signup($payload: AuthPayload!) {
+    signup(payload: $payload) {
       user {
         id
         email

@@ -3,9 +3,19 @@ import { Form, Input, Button } from 'antd';
 
 import style from './style.module.scss';
 import { Auth } from './interface';
+import { SignupSuccess } from '../../components';
 
 const View: FC<Auth> = (props): JSX.Element => {
-  const { isSignin, setIsSignin, setIsSignup, onFinish, loading } = props;
+  const {
+    isSignin,
+    setIsSignin,
+    setIsSignup,
+    onFinish,
+    loading,
+    isVisibleModal,
+    openModal,
+    closeModal,
+  } = props;
 
   return (
     <div className={style.container}>
@@ -63,6 +73,11 @@ const View: FC<Auth> = (props): JSX.Element => {
           </div>
         </Form.Item>
       </Form>
+      <SignupSuccess
+        isVisible={isVisibleModal}
+        open={openModal}
+        close={closeModal}
+      />
     </div>
   );
 };
