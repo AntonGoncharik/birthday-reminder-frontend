@@ -78,6 +78,12 @@ export const useAccountState = () => {
         },
       });
 
+      localStorage.setItem('accessToken', result.data.signin.token.accessToken);
+      localStorage.setItem(
+        'refreshToken',
+        result.data.signin.token.refreshToken,
+      );
+
       navigate('/');
     } catch (error) {
       setState({
@@ -88,6 +94,47 @@ export const useAccountState = () => {
       showError(error as Error);
     }
   };
+
+  // const autoSignin = async (payload: AuthPayload) => {
+  //   try {
+  //     setState({
+  //       ...state,
+  //       loading: true,
+  //     });
+
+  //     const result = await signinMutation({
+  //       variables: {
+  //         payload,
+  //       },
+  //     });
+
+  //     setState({
+  //       loading: false,
+  //       data: {
+  //         ...state.data,
+  //         id: result.data.signin.user.id,
+  //         email: result.data.signin.user.email,
+  //         firstName: result.data.signin.user.firstName,
+  //         lastName: result.data.signin.user.lastName,
+  //       },
+  //     });
+
+  //     localStorage.setItem('accessToken', result.data.signin.token.accessToken);
+  //     localStorage.setItem(
+  //       'refreshToken',
+  //       result.data.signin.token.refreshToken,
+  //     );
+
+  //     navigate('/');
+  //   } catch (error) {
+  //     setState({
+  //       ...state,
+  //       loading: false,
+  //     });
+
+  //     showError(error as Error);
+  //   }
+  // };
 
   return { state, signup, signin };
 };

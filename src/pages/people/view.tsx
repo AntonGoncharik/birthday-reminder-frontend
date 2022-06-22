@@ -5,23 +5,8 @@ import { PlusCircleOutlined } from '@ant-design/icons';
 import style from './style.module.scss';
 import { People } from './interface';
 
-const data = [
-  {
-    title: 'Ant Design Title 1',
-  },
-  {
-    title: 'Ant Design Title 2',
-  },
-  {
-    title: 'Ant Design Title 3',
-  },
-  {
-    title: 'Ant Design Title 4',
-  },
-];
-
 const View: FC<People> = (props): JSX.Element => {
-  const { navigateToAddMan, navigateToMan } = props;
+  const { people, navigateToAddMan, navigateToMan } = props;
 
   return (
     <>
@@ -34,7 +19,7 @@ const View: FC<People> = (props): JSX.Element => {
       />
       <List
         itemLayout="horizontal"
-        dataSource={data}
+        dataSource={people}
         renderItem={() => (
           <List.Item className={style.item} onClick={navigateToMan}>
             <List.Item.Meta

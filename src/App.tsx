@@ -1,7 +1,13 @@
 import React, { FC, Suspense } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
-import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+import {
+  ApolloClient,
+  InMemoryCache,
+  ApolloProvider,
+  createHttpLink,
+} from '@apollo/client';
+import { setContext } from '@apollo/client/link/context';
 
 import './layout/global.scss';
 import style from './App.module.scss';
@@ -9,8 +15,23 @@ import { Account, Auth, Home, People, Man } from './pages';
 import { ErrorBoundary, Navbar, Splash } from './components';
 import { useAccountState } from './store';
 
-const client = new ApolloClient({
+const httpLink = createHttpLink({
   uri: process.env.REACT_APP_API_URL,
+});
+
+const authLink = setContext((_, { headers }) => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  return {
+    headers: {
+      ...headers,
+      authorization: accessToken ? `jwt ${accessToken}` : '',
+    },
+  };
+});
+
+const client = new ApolloClient({
+  link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
 });
 

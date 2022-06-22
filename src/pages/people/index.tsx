@@ -1,10 +1,17 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import View from './view';
+import { usePeopleState } from '../../store';
 
 const Container: FC = (): JSX.Element => {
   const navigate = useNavigate();
+
+  const { state, getAll } = usePeopleState();
+
+  useEffect(() => {
+    getAll();
+  }, []);
 
   const handleNavigateToAddMan = () => {
     navigate('/man', { state: { action: 'ADD' } });
@@ -18,6 +25,7 @@ const Container: FC = (): JSX.Element => {
     <View
       navigateToAddMan={handleNavigateToAddMan}
       navigateToMan={handleNavigateToMan}
+      people={state.data}
     />
   );
 };
