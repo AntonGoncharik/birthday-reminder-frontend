@@ -12,3 +12,29 @@ export const getAllGql = gql`
     }
   }
 `;
+
+export const createGql = gql`
+  mutation createBirthdayMan($payload: CreateBirthdayMan!) {
+    createBirthdayMan(payload: $payload) {
+      id
+      userId
+      firstName
+      lastName
+      birthDate
+      createdAt
+    }
+  }
+`;
+
+export const updateGql = gql`
+  mutation updateBirthdayMan($payload: UpdateBirthdayMan!) {
+    updateBirthdayMan(payload: $payload) {
+      id
+      userId
+      firstName
+      lastName
+      birthDate
+      createdAt
+    }
+  }
+`;

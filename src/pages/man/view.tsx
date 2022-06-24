@@ -2,12 +2,10 @@ import React, { FC } from 'react';
 import { Form, Input, Button, DatePicker } from 'antd';
 
 import style from './style.module.scss';
-// import { Auth, AuthPayload } from './interface';
+import { Man } from './interface';
 
-const View: FC = (): JSX.Element => {
-  const onFinish = (values: any) => {
-    console.log('Success:', values);
-  };
+const View: FC<Man> = (props): JSX.Element => {
+  const { onFinish, loading } = props;
 
   return (
     <div className={style.container}>
@@ -40,10 +38,21 @@ const View: FC = (): JSX.Element => {
         >
           <DatePicker />
         </Form.Item>
-        <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-          <Button type="primary" htmlType="submit">
-            Save
-          </Button>
+        <Form.Item wrapperCol={{ offset: 8, span: 16 }} shouldUpdate>
+          {(form) => (
+            <Button
+              type="primary"
+              htmlType="submit"
+              loading={loading}
+              disabled={
+                !form.isFieldsTouched(true) ||
+                !!form.getFieldsError().filter(({ errors }) => errors.length)
+                  .length
+              }
+            >
+              Save
+            </Button>
+          )}
         </Form.Item>
       </Form>
     </div>
