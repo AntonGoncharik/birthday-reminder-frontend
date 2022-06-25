@@ -1,6 +1,6 @@
-import { gql } from '@apollo/client';
+import { gql, useMutation } from '@apollo/client';
 
-export const signupGql = gql`
+const signupGql = gql`
   mutation signup($payload: AuthPayload!) {
     signup(payload: $payload) {
       user {
@@ -17,7 +17,7 @@ export const signupGql = gql`
   }
 `;
 
-export const signinGql = gql`
+const signinGql = gql`
   mutation signin($payload: AuthPayload!) {
     signin(payload: $payload) {
       user {
@@ -33,3 +33,10 @@ export const signinGql = gql`
     }
   }
 `;
+
+export const useAuthService = () => {
+  const [signupMutation] = useMutation(signupGql);
+  const [signinMutation] = useMutation(signinGql);
+
+  return { signupMutation, signinMutation };
+};

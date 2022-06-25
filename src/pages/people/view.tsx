@@ -36,11 +36,17 @@ const View: FC<People> = (props): JSX.Element => {
         itemLayout="horizontal"
         dataSource={people}
         renderItem={(item: Man) => {
+          const handleNavigateToMan = () => {
+            navigateToMan(item.id);
+          };
+
           return (
-            <List.Item className={style.item} onClick={navigateToMan}>
+            <List.Item className={style.item} onClick={handleNavigateToMan}>
               <List.Item.Meta
-                avatar={<Avatar src="https://joeschmoe.io/api/v1/random" />}
-                title={<a href="https://ant.design"></a>}
+                className={style.itemMeta}
+                avatar={
+                  <Avatar src="https://cdn-icons-png.flaticon.com/512/147/147142.png" />
+                }
                 description={getDescription(item)}
               />
             </List.Item>

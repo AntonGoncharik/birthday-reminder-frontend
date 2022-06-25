@@ -1,39 +1,46 @@
-import React, { FC } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import React, { FC, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import moment from 'moment';
 
 import View from './view';
 import { usePeopleState, useAccountState } from '../../store';
 import { ManForm } from './interface';
 
 const Container: FC = (): JSX.Element => {
-  const location = useLocation();
+  const { id } = useParams();
 
   const navigate = useNavigate();
 
-  const { state, create, update } = usePeopleState();
+  const { state, get, create, update } = usePeopleState();
   const { state: stateAccount } = useAccountState();
+
+  useEffect(() => {
+    if (id) {
+      get(id);
+    }
+  }, []);
 
   const goToPeople = () => {
     navigate('/people');
   };
 
   const onFinish = (values: ManForm) => {
-    if ((location.state as { action: string }).action === 'ADD') {
-      create(
+    if (id) {
+      update(
         {
           ...values,
-          birthDate: values.birthDate._i,
-          userId: stateAccount.data.id,
+          birthDate: moment(values.birthDate).format('YYYY-MM-DD'),
+          id,
         },
         goToPeople,
       );
     }
 
-    if ((location.state as { action: string }).action === 'EDIT') {
-      update(
+    if (!id) {
+      create(
         {
           ...values,
-          birthDate: values.birthDate._i,
+          birthDate: moment(values.birthDate).format('YYYY-MM-DD'),
           userId: stateAccount.data.id,
         },
         goToPeople,
@@ -41,7 +48,17 @@ const Container: FC = (): JSX.Element => {
     }
   };
 
-  return <View onFinish={onFinish} loading={state.loading} />;
+  return (
+    <View
+      initialState={{
+        firstName: id ? state.data[0].firstName : '',
+        lastName: id ? state.data[0].lastName : '',
+        birthDate: id ? moment(+state.data[0].birthDate) : moment(),
+      }}
+      onFinish={onFinish}
+      loading={state.loading}
+    />
+  );
 };
 
 export default Container;

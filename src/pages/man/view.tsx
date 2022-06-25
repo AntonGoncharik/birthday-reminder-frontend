@@ -5,7 +5,7 @@ import style from './style.module.scss';
 import { Man } from './interface';
 
 const View: FC<Man> = (props): JSX.Element => {
-  const { onFinish, loading } = props;
+  const { initialState, onFinish, loading } = props;
 
   return (
     <div className={style.container}>
@@ -13,46 +13,50 @@ const View: FC<Man> = (props): JSX.Element => {
         name="basic"
         labelCol={{ span: 8 }}
         wrapperCol={{ span: 16 }}
-        initialValues={{ remember: true }}
+        initialValues={initialState}
         onFinish={onFinish}
         autoComplete="off"
+        validateTrigger="onBlur"
       >
         <Form.Item
           label="First name"
           name="firstName"
           rules={[{ required: true, message: 'Please input your first name!' }]}
         >
-          <Input />
+          <Input placeholder="First name" />
         </Form.Item>
         <Form.Item
           label="Last name"
           name="lastName"
           rules={[{ required: true, message: 'Please input your last name!' }]}
         >
-          <Input />
+          <Input placeholder="Last name" />
         </Form.Item>
         <Form.Item
           label="Birth date"
           name="birthDate"
           rules={[{ required: true, message: 'Please input your birth date!' }]}
         >
-          <DatePicker />
+          <DatePicker placeholder="Birth date" />
         </Form.Item>
         <Form.Item wrapperCol={{ offset: 8, span: 16 }} shouldUpdate>
-          {(form) => (
-            <Button
-              type="primary"
-              htmlType="submit"
-              loading={loading}
-              disabled={
-                !form.isFieldsTouched(true) ||
-                !!form.getFieldsError().filter(({ errors }) => errors.length)
-                  .length
-              }
-            >
-              Save
-            </Button>
-          )}
+          {(form) => {
+            return (
+              <Button
+                type="primary"
+                htmlType="submit"
+                loading={loading}
+                disabled={
+                  !form.isFieldsTouched() ||
+                  !!form.getFieldsError().filter(({ errors }) => {
+                    return errors.length;
+                  }).length
+                }
+              >
+                Save
+              </Button>
+            );
+          }}
         </Form.Item>
       </Form>
     </div>

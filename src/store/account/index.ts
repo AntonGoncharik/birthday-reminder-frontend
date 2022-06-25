@@ -1,8 +1,7 @@
 import { atom, useRecoilState } from 'recoil';
-import { useMutation } from '@apollo/client';
 import { useNavigate } from 'react-router-dom';
 
-import { signupGql, signinGql } from '../../services';
+import { useAuthService } from '../../services';
 import { AuthPayload } from '../../interfaces';
 import { showError } from '../../utilities';
 
@@ -21,8 +20,9 @@ const accountState = atom({
 
 export const useAccountState = () => {
   const [state, setState] = useRecoilState(accountState);
-  const [signupMutation] = useMutation(signupGql);
-  const [signinMutation] = useMutation(signinGql);
+
+  const { signinMutation, signupMutation } = useAuthService();
+
   const navigate = useNavigate();
 
   const signup = async (payload: AuthPayload, successCallback: () => void) => {

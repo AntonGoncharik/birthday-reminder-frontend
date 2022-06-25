@@ -14,11 +14,11 @@ const Container: FC = (): JSX.Element => {
   }, []);
 
   const handleNavigateToAddMan = () => {
-    navigate('/man', { state: { action: 'ADD' } });
+    navigate('/man');
   };
 
-  const handleNavigateToMan = () => {
-    navigate('/man', { state: { action: 'EDIT' } });
+  const handleNavigateToMan = (id: string) => {
+    navigate(`/man/${id}`);
   };
 
   return (

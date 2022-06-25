@@ -45,6 +45,7 @@ const AuthorizedLayout: FC = (): JSX.Element => {
           <Route path="/account" element={<Account />} />
           <Route path="/people" element={<People />} />
           <Route path="/man" element={<Man />} />
+          <Route path="/man/:id" element={<Man />} />
         </Routes>
       </div>
     </>

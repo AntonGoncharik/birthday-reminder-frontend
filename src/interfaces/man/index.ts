@@ -8,7 +8,8 @@ export interface Man {
 }
 
 export interface PayloadMan {
-  userId: string;
+  id?: string;
+  userId?: string;
   firstName: string;
   lastName: string;
   birthDate: string;
