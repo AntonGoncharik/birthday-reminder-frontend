@@ -3,9 +3,14 @@ import { Form, Input, Button, DatePicker } from 'antd';
 
 import style from './style.module.scss';
 import { Man } from './interface';
+import { Splash } from '../../components';
 
 const View: FC<Man> = (props): JSX.Element => {
   const { initialState, onFinish, loading } = props;
+
+  if (loading) {
+    return <Splash widthHeader />;
+  }
 
   return (
     <div className={style.container}>

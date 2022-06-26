@@ -1,3 +1,3 @@
-export interface Home {
-  email?: string;
+export interface Splash {
+  widthHeader?: boolean;
 }

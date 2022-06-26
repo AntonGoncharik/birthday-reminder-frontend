@@ -5,6 +5,7 @@ import moment from 'moment';
 
 import { Home } from './interface';
 import { Man } from '../../interfaces';
+import { Splash } from '../../components';
 
 const getListData = (value: Moment, people: Man[]) => {
   return people
@@ -20,13 +21,19 @@ const getListData = (value: Moment, people: Man[]) => {
     .map((item) => {
       const years = value.diff(item.birthDate, 'years');
 
-      return `${item.lastName} ${item.firstName} ${years + 1} years!`;
+      return `${item.lastName} ${item.firstName} ${years} years!`;
     });
 };
 
 const View: FC<Home> = (props) => {
+  const { loading, people } = props;
+
+  if (loading) {
+    return <Splash widthHeader />;
+  }
+
   const dateCellRender = (value: Moment) => {
-    const listData = getListData(value, props.people);
+    const listData = getListData(value, people);
 
     return (
       <ul style={{ overflow: 'auto', padding: 0 }}>

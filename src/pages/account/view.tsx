@@ -2,10 +2,15 @@ import React, { FC } from 'react';
 import { Form, Input } from 'antd';
 
 import style from './style.module.scss';
-import { useAccountState } from '../../store';
+import { Auth } from './interface';
+import { Splash } from '../../components';
 
-const View: FC = (): JSX.Element => {
-  const { state } = useAccountState();
+const View: FC<Auth> = (props): JSX.Element => {
+  const { email, firstName, lastName, loading } = props;
+
+  if (loading) {
+    return <Splash widthHeader />;
+  }
 
   return (
     <div className={style.container}>
@@ -14,9 +19,9 @@ const View: FC = (): JSX.Element => {
         labelCol={{ span: 8 }}
         wrapperCol={{ span: 16 }}
         initialValues={{
-          email: state.data.email,
-          firstName: state.data.firstName,
-          lastName: state.data.lastName,
+          email: email,
+          firstName: firstName,
+          lastName: lastName,
         }}
         autoComplete="off"
       >

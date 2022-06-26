@@ -4,4 +4,5 @@ export interface People {
   navigateToAddMan: () => void;
   navigateToMan: (id: string) => void;
   people: Man[];
+  loading: boolean;
 }

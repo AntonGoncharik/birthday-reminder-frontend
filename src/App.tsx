@@ -6,6 +6,7 @@ import {
   InMemoryCache,
   ApolloProvider,
   createHttpLink,
+  DefaultOptions,
 } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 
@@ -30,9 +31,21 @@ const authLink = setContext((_, { headers }) => {
   };
 });
 
+const defaultOptions: DefaultOptions = {
+  watchQuery: {
+    fetchPolicy: 'no-cache',
+    errorPolicy: 'ignore',
+  },
+  query: {
+    fetchPolicy: 'no-cache',
+    errorPolicy: 'all',
+  },
+};
+
 const client = new ApolloClient({
   link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
+  defaultOptions: defaultOptions,
 });
 
 const AuthorizedLayout: FC = (): JSX.Element => {
@@ -64,9 +77,9 @@ const UnauthorizedLayout: FC = (): JSX.Element => {
 const Layout = () => {
   const { state } = useAccountState();
 
-  // if (state.loading) {
-  //   return <Splash />;
-  // }
+  if (state.loading) {
+    return <Splash />;
+  }
 
   if (state.data.email) {
     return <AuthorizedLayout />;

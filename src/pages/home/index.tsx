@@ -10,7 +10,7 @@ const Container: FC = (): JSX.Element => {
     getAll();
   }, []);
 
-  return <View people={state.data} />;
+  return <View people={state.data} loading={state.loading} />;
 };
 
 export default Container;

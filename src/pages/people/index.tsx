@@ -26,6 +26,7 @@ const Container: FC = (): JSX.Element => {
       navigateToAddMan={handleNavigateToAddMan}
       navigateToMan={handleNavigateToMan}
       people={state.data}
+      loading={state.loading}
     />
   );
 };

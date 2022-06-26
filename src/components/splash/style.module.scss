@@ -3,4 +3,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
+
+  &.widthHeader {
+    height: calc(100vh - 46px - 2rem);
+  }
 }

@@ -5,9 +5,14 @@ import { PlusCircleOutlined } from '@ant-design/icons';
 import style from './style.module.scss';
 import { People } from './interface';
 import { Man } from '../../interfaces';
+import { Splash } from '../../components';
 
 const View: FC<People> = (props): JSX.Element => {
-  const { people, navigateToAddMan, navigateToMan } = props;
+  const { people, navigateToAddMan, navigateToMan, loading } = props;
+
+  if (loading) {
+    return <Splash widthHeader />;
+  }
 
   const getDescription = (man: Man) => {
     const date = new Date(+man.birthDate);

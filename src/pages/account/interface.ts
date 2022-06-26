@@ -1,3 +1,6 @@
-export interface Home {
-  email?: string;
+export interface Auth {
+  email: string;
+  firstName: string;
+  lastName: string;
+  loading: boolean;
 }
