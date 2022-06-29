@@ -8,7 +8,7 @@ import { showError } from '../../utilities';
 const accountState = atom({
   key: 'accountState',
   default: {
-    loading: false,
+    loading: true,
     data: {
       id: '',
       email: '',
@@ -21,7 +21,8 @@ const accountState = atom({
 export const useAccountState = () => {
   const [state, setState] = useRecoilState(accountState);
 
-  const { signinMutation, signupMutation } = useAuthService();
+  const { signinMutation, signupMutation, autoSigninMutation } =
+    useAuthService();
 
   const navigate = useNavigate();
 
@@ -95,46 +96,109 @@ export const useAccountState = () => {
     }
   };
 
-  // const autoSignin = async (payload: AuthPayload) => {
-  //   try {
-  //     setState({
-  //       ...state,
-  //       loading: true,
-  //     });
+  const autoSignin = async () => {
+    try {
+      setState({
+        ...state,
+        loading: true,
+      });
 
-  //     const result = await signinMutation({
-  //       variables: {
-  //         payload,
-  //       },
-  //     });
+      const accessToken = localStorage.getItem('accessToken');
+      if (!accessToken) {
+        setState({
+          ...state,
+          loading: false,
+        });
+        return;
+      }
 
-  //     setState({
-  //       loading: false,
-  //       data: {
-  //         ...state.data,
-  //         id: result.data.signin.user.id,
-  //         email: result.data.signin.user.email,
-  //         firstName: result.data.signin.user.firstName,
-  //         lastName: result.data.signin.user.lastName,
-  //       },
-  //     });
+      const result = await autoSigninMutation({
+        variables: {
+          accessToken,
+        },
+      });
 
-  //     localStorage.setItem('accessToken', result.data.signin.token.accessToken);
-  //     localStorage.setItem(
-  //       'refreshToken',
-  //       result.data.signin.token.refreshToken,
-  //     );
+      setState({
+        loading: false,
+        data: {
+          ...state.data,
+          id: result.data.autoSignin.user.id,
+          email: result.data.autoSignin.user.email,
+          firstName: result.data.autoSignin.user.firstName,
+          lastName: result.data.autoSignin.user.lastName,
+        },
+      });
 
-  //     navigate('/');
-  //   } catch (error) {
-  //     setState({
-  //       ...state,
-  //       loading: false,
-  //     });
+      localStorage.setItem(
+        'accessToken',
+        result.data.autoSignin.token.accessToken,
+      );
+      localStorage.setItem(
+        'refreshToken',
+        result.data.autoSignin.token.refreshToken,
+      );
+    } catch (error) {
+      setState({
+        ...state,
+        loading: false,
+      });
 
-  //     showError(error as Error);
-  //   }
-  // };
+      showError(error as Error);
+    }
+  };
 
-  return { state, signup, signin };
+  const refreshToken = async () => {
+    try {
+      setState({
+        ...state,
+        loading: true,
+      });
+
+      const accessToken = localStorage.getItem('accessToken');
+      if (!accessToken) {
+        setState({
+          ...state,
+          loading: false,
+        });
+        return;
+      }
+
+      const result = await autoSigninMutation({
+        variables: {
+          accessToken,
+        },
+      });
+
+      setState({
+        loading: false,
+        data: {
+          ...state.data,
+          id: result.data.autoSignin.user.id,
+          email: result.data.autoSignin.user.email,
+          firstName: result.data.autoSignin.user.firstName,
+          lastName: result.data.autoSignin.user.lastName,
+        },
+      });
+
+      localStorage.setItem(
+        'accessToken',
+        result.data.autoSignin.token.accessToken,
+      );
+      localStorage.setItem(
+        'refreshToken',
+        result.data.autoSignin.token.refreshToken,
+      );
+
+      navigate('/');
+    } catch (error) {
+      setState({
+        ...state,
+        loading: false,
+      });
+
+      showError(error as Error);
+    }
+  };
+
+  return { state, signup, signin, autoSignin, refreshToken };
 };

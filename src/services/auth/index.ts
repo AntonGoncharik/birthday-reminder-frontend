@@ -34,9 +34,48 @@ const signinGql = gql`
   }
 `;
 
+const autoSigninGql = gql`
+  mutation autoSignin($accessToken: String!) {
+    autoSignin(accessToken: $accessToken) {
+      user {
+        id
+        email
+        firstName
+        lastName
+      }
+      token {
+        accessToken
+        refreshToken
+      }
+    }
+  }
+`;
+
+export const refreshTokenGql = gql`
+  mutation refreshToken($refreshToken: String!) {
+    refreshToken(refreshToken: $refreshToken) {
+      user {
+        id
+        email
+        firstName
+        lastName
+      }
+      token {
+        accessToken
+        refreshToken
+      }
+    }
+  }
+`;
+
 export const useAuthService = () => {
   const [signupMutation] = useMutation(signupGql);
   const [signinMutation] = useMutation(signinGql);
+  const [autoSigninMutation] = useMutation(autoSigninGql);
 
-  return { signupMutation, signinMutation };
+  return {
+    signupMutation,
+    signinMutation,
+    autoSigninMutation,
+  };
 };

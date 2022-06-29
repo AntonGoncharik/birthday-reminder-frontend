@@ -29,7 +29,7 @@ export const usePeopleState = () => {
 
       setState({
         loading: false,
-        data: result.data.getBirthdayPeople,
+        data: result.data.getBirthdayPeople ?? [],
       });
     } catch (error) {
       setState({

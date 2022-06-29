@@ -1,4 +1,4 @@
-import React, { FC, Suspense } from 'react';
+import React, { FC, Suspense, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 import {
@@ -7,14 +7,30 @@ import {
   ApolloProvider,
   createHttpLink,
   DefaultOptions,
+  from,
 } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
+import { onError } from '@apollo/client/link/error';
 
 import './layout/global.scss';
 import style from './App.module.scss';
 import { Account, Auth, Home, People, Man } from './pages';
 import { ErrorBoundary, Navbar, Splash } from './components';
 import { useAccountState } from './store';
+import { refreshTokenGql } from './services';
+
+let error401 = false;
+
+const refresh = async (refreshToken: string) => {
+  const response = await client.mutate({
+    mutation: refreshTokenGql,
+    variables: {
+      refreshToken,
+    },
+  });
+
+  return response;
+};
 
 const httpLink = createHttpLink({
   uri: process.env.REACT_APP_API_URL,
@@ -31,6 +47,48 @@ const authLink = setContext((_, { headers }) => {
   };
 });
 
+const errorLink = onError(({ graphQLErrors, operation, forward }) => {
+  if (graphQLErrors && !error401) {
+    for (const err of graphQLErrors) {
+      switch ((err.extensions.exception as { status: number }).status) {
+        case 401:
+          error401 = true;
+          const refreshToken = localStorage.getItem('refreshToken');
+          if (!refreshToken) {
+            throw new Error('refresh token not found');
+          }
+
+          refresh(refreshToken)
+            .then((data) => {
+              error401 = false;
+
+              localStorage.setItem(
+                'accessToken',
+                data.data.refreshToken.token.accessToken,
+              );
+              localStorage.setItem(
+                'refreshToken',
+                data.data.refreshToken.token.refreshToken,
+              );
+
+              const oldHeaders = operation.getContext().headers;
+              operation.setContext({
+                headers: {
+                  ...oldHeaders,
+                  authorization: `jwt ${data.data.refreshToken.token.accessToken}`,
+                },
+              });
+
+              forward(operation);
+            })
+            .catch((error: Error) => {
+              throw error;
+            });
+      }
+    }
+  }
+});
+
 const defaultOptions: DefaultOptions = {
   watchQuery: {
     fetchPolicy: 'no-cache',
@@ -43,7 +101,7 @@ const defaultOptions: DefaultOptions = {
 };
 
 const client = new ApolloClient({
-  link: authLink.concat(httpLink),
+  link: from([authLink, errorLink, httpLink]),
   cache: new InMemoryCache(),
   defaultOptions: defaultOptions,
 });
@@ -75,7 +133,11 @@ const UnauthorizedLayout: FC = (): JSX.Element => {
 };
 
 const Layout = () => {
-  const { state } = useAccountState();
+  const { state, autoSignin } = useAccountState();
+
+  useEffect(() => {
+    autoSignin();
+  }, []);
 
   if (state.loading) {
     return <Splash />;

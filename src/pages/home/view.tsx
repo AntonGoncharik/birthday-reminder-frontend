@@ -15,7 +15,8 @@ const getListData = (value: Moment, people: Man[]) => {
     .filter((item) => {
       return (
         item.birthDate.date() === value.date() &&
-        item.birthDate.month() === value.month()
+        item.birthDate.month() === value.month() &&
+        value.diff(item.birthDate, 'years') > 0
       );
     })
     .map((item) => {
