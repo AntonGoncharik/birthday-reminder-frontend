@@ -47,4 +47,4 @@ jobs:
         run: docker stop birthday-reminder-frontend/web || true
 
       - name: Run containers
-        run: docker run -d -p 8002:80 --restart always --rm --name birthday-reminder-frontend/web
+        run: docker run -d -p 8002:80 --restart always --rm --name birthday-reminder-frontend/web ${{ secrets.DOCKERHUB_ACCOUNT }}/${{ secrets.DOCKERHUB_IMAGE_NAME }}
