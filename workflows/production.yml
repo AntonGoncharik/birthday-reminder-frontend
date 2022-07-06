@@ -44,7 +44,7 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
 
       - name: Stop containers
-        run: docker stop ${{ secrets.DOCKER_CONTAINER_NAME }}
+        run: docker stop birthday-reminder-frontend/web
 
       - name: Run containers
-        run: docker run -d -p 8002:80 --restart always --rm --name ${{ secrets.DOCKER_CONTAINER_NAME }}
+        run: docker run -d -p 8002:80 --restart always --rm --name birthday-reminder-frontend/web
