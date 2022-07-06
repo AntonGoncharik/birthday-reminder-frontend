@@ -1,0 +1,50 @@
+name: production
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+env:
+  SSH: ssh -T ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Build image
+        run: docker build --build-arg REACT_APP_API_URL={{ secrets.REACT_APP_API_URL }} --build-arg REACT_APP_SENTRY_DSN={{ secrets.REACT_APP_SENTRY_DSN }} -t ${{ secrets.DOCKERHUB_ACCOUNT }}/${{ secrets.DOCKERHUB_IMAGE_NAME }} -f Dockerfile.production .
+
+      - name: Login to DockerHub
+        run: echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+
+      - name: Push image to Docker Hub
+        run: docker push ${{ secrets.DOCKERHUB_ACCOUNT }}/${{ secrets.DOCKERHUB_IMAGE_NAME }}
+
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    needs: build
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: SSH settings
+        run: |
+          mkdir -p ~/.ssh/
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          echo "${{ secrets.SSH_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/id_rsa
+
+      - name: Stop containers
+        run: docker stop ${{ secrets.DOCKER_CONTAINER_NAME }}
+
+      - name: Run containers
+        run: docker run -d -p 8002:80 --restart always --rm --name ${{ secrets.DOCKER_CONTAINER_NAME }}
