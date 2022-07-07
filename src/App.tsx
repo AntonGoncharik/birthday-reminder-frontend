@@ -31,7 +31,7 @@ const refresh = async (refreshToken: string) => {
 
   return response;
 };
-
+console.log(process.env.REACT_APP_API_URL);
 const httpLink = createHttpLink({
   uri: process.env.REACT_APP_API_URL,
 });
