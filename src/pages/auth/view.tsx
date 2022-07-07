@@ -19,7 +19,6 @@ const View: FC<Auth> = (props): JSX.Element => {
 
   return (
     <div className={style.container}>
-      121212
       <Form
         name="basic"
         labelCol={{ span: 8 }}

@@ -49,4 +49,4 @@ jobs:
           ${{ env.SSH }} docker rm birthday-reminder-frontend-web || true
 
       - name: Run containers
-        run: ${{ env.SSH }} docker run -d -p 8002:80 --restart always --name birthday-reminder-frontend-web ${{ secrets.DOCKERHUB_ACCOUNT }}/${{ secrets.DOCKERHUB_IMAGE_NAME }}
+        run: ${{ env.SSH }} docker run -d -p 8002:80 --restart always --pull=always --name birthday-reminder-frontend-web ${{ secrets.DOCKERHUB_ACCOUNT }}/${{ secrets.DOCKERHUB_IMAGE_NAME }}
