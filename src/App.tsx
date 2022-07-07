@@ -33,8 +33,8 @@ const refresh = async (refreshToken: string) => {
 };
 
 const httpLink = createHttpLink({
-  // uri: process.env.REACT_APP_API_URL,
-  uri: 'http://113.30.189.150:8001',
+  uri: process.env.REACT_APP_API_URL,
+  // uri: 'http://113.30.189.150:8001',
 });
 
 const authLink = setContext((_, { headers }) => {
