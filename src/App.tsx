@@ -47,6 +47,7 @@ const authLink = setContext((_, { headers }) => {
   };
 });
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const errorLink = onError(({ graphQLErrors, operation, forward }) => {
   if (graphQLErrors && !error401) {
     for (const err of graphQLErrors) {
@@ -101,7 +102,7 @@ const defaultOptions: DefaultOptions = {
 };
 
 const client = new ApolloClient({
-  link: from([authLink, errorLink, httpLink]),
+  link: from([authLink, httpLink]),
   cache: new InMemoryCache(),
   defaultOptions: defaultOptions,
 });
