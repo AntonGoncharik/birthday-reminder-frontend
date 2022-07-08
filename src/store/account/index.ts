@@ -93,11 +93,6 @@ export const useAccountState = () => {
       });
 
       showError(error as Error);
-    } finally {
-      setState({
-        ...state,
-        loading: false,
-      });
     }
   };
 

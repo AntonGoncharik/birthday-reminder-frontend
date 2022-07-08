@@ -50,7 +50,7 @@ const authLink = setContext((_, { headers }) => {
 const errorLink = onError(({ graphQLErrors, operation, forward }) => {
   if (graphQLErrors && !error401) {
     for (const err of graphQLErrors) {
-      switch ((err.extensions.exception as { status: number }).status) {
+      switch ((err.extensions.exception as { status: number })?.status) {
         case 401:
           error401 = true;
           const refreshToken = localStorage.getItem('refreshToken');
