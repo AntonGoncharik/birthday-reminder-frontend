@@ -22,7 +22,7 @@ const getListData = (value: Moment, people: Man[]) => {
     .map((item) => {
       const years = value.diff(item.birthDate, 'years');
 
-      return `${item.lastName} ${item.firstName} ${years + 1} years!`;
+      return `${item.lastName} ${item.firstName} ${years} years!`;
     });
 };
 
