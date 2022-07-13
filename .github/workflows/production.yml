@@ -50,7 +50,3 @@ jobs:
 
       - name: Run containers
         run: ${{ env.SSH }} docker run -d -p 8002:80 --restart always --pull=always --name birthday-reminder-frontend-web ${{ secrets.DOCKERHUB_ACCOUNT }}/${{ secrets.DOCKERHUB_IMAGE_NAME }}
-
-      - name: Test
-        run: |
-          ${{ env.SSH }} echo '${{ secrets.ENV }} > test.env'
