@@ -23,9 +23,9 @@ FROM nginx:alpine as production
 
 COPY nginx.conf /etc/nginx/nginx.conf
 
-RUN echo SSL_CERTIFICATE > /etc/nginx/certificate.crt
+# RUN echo SSL_CERTIFICATE > /etc/nginx/certificate.crt
 
-RUN echo SSL_CERTIFICATE_KEY > /etc/nginx/privateKey.key
+# RUN echo SSL_CERTIFICATE_KEY > /etc/nginx/privateKey.key
 
 COPY --from=development /app/build /usr/share/nginx/html
 
