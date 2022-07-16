@@ -8,6 +8,9 @@ ENV REACT_APP_API_URL=$REACT_APP_API_URL
 ARG REACT_APP_SENTRY_DSN
 ENV REACT_APP_SENTRY_DSN=$REACT_APP_SENTRY_DSN
 
+ARG SSL_CERTIFICATE
+ARG SSL_CERTIFICATE_KEY
+
 COPY package.json yarn.lock ./
 
 RUN yarn install
@@ -20,6 +23,12 @@ FROM nginx:alpine as production
 
 COPY nginx.conf /etc/nginx/nginx.conf
 
+RUN echo SSL_CERTIFICATE > /etc/cert/certificate.crt
+
+RUN echo SSL_CERTIFICATE_KEY > /etc/cert/privateKey.key
+
 COPY --from=development /app/build /usr/share/nginx/html
+
+EXPOSE 80
 
 CMD ["nginx", "-g", "daemon off;"]
