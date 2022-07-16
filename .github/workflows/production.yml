@@ -20,7 +20,7 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Build image
-        run: docker build -t ${{ secrets.DOCKERHUB_ACCOUNT }}/${{ secrets.DOCKERHUB_IMAGE_NAME }} --build-arg REACT_APP_API_URL=${{ secrets.REACT_APP_API_URL }} --build-arg REACT_APP_SENTRY_DSN=${{ secrets.REACT_APP_SENTRY_DSN }} --build-arg SSL_CERTIFICATE=${{ secrets.SSL_CERTIFICATE }} --build-arg SSL_CERTIFICATE_KEY=${{ secrets.SSL_CERTIFICATE_KEY }} -f Dockerfile.production .
+        run: docker build -t ${{ secrets.DOCKERHUB_ACCOUNT }}/${{ secrets.DOCKERHUB_IMAGE_NAME }} --build-arg REACT_APP_API_URL=${{ secrets.REACT_APP_API_URL }} --build-arg REACT_APP_SENTRY_DSN=${{ secrets.REACT_APP_SENTRY_DSN }} --build-arg SSL_CERT=${{ secrets.SSL_CERT }} --build-arg SSL_CERT_KEY=${{ secrets.SSL_CERT_KEY }} -f Dockerfile.production .
 
       - name: Login to DockerHub
         run: echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
